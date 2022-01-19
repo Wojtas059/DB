@@ -1,0 +1,13 @@
+DECLARE
+    CURSOR c1 IS SELECT zdal FROM egzaminy FOR UPDATE OF punkty;
+BEGIN
+    FOR dane IN c1 LOOP
+        IF dane.zdal = 'T' THEN
+            UPDATE egzaminy e SET PUNKTY = ROUND(DBMS_RANDOM.VALUE(3, 5), 2)
+            WHERE CURRENT OF c1;
+        ELSE
+            UPDATE egzaminy e SET PUNKTY = ROUND(DBMS_RANDOM.VALUE(2, 2.99), 2)
+            WHERE CURRENT OF c1;
+        END IF;
+    END LOOP;
+END;

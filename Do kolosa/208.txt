@@ -1,0 +1,27 @@
+DECLARE
+    egzaminator_nie_istnieje EXCEPTION;
+    CURSOR c1 IS SELECT id_egzaminator, imie, nazwisko FROM egzaminatorzy
+    WHERE UPPER(nazwisko) = 'NIEMA';
+    CURSOR c2(idEgzaminatora NUMBER) IS SELECT COUNT(*) as liczba FROm egzaminy
+    WHERE id_egzaminator = idEgzaminatora
+    GROUP BY id_egzaminator;
+    data c1%rowtype;
+BEGIN 
+    OPEN c1;
+    FETCH c1 INTO data;
+    BEGIN
+        IF c1%NOTFOUND THEN RAISE egzaminator_nie_istnieje;
+        ELSE
+            WHILE c1%FOUND LOOP
+                FOR vC2 in C2(data.id_egzaminator) LOOP
+                    DBMS_OUTPUT.put_line(data.id_egzaminator || ' ' || data.imie || ' ' || data.nazwisko || ' ' || vC2.liczba);
+                END LOOP;
+            FETCH c1 INTO data;
+            END LOOP;
+        END IF;
+    EXCEPTION 
+        WHEN egzaminator_nie_istnieje THEN
+            DBMS_OUTPUT.put_line('Egzaminator o podanym nazwisku nie istnieje');
+    END;
+    CLOSE c1;
+END;

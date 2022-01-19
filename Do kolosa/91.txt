@@ -1,0 +1,9 @@
+SELECT * FROM Osrodki
+WHERE id_osrodek NOT IN (SELECT DISTINCT id_osrodek FROM egzaminy
+WHERE id_student = 0000001);
+
+
+select o.id_osrodek, o.nazwa_osrodek, o.miasto from osrodki o
+minus
+select o.id_osrodek, o.nazwa_osrodek, o.miasto from osrodki o inner join egzaminy e on o.id_osrodek = e.id_osrodek
+where e.id_student = 0000001

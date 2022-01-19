@@ -1,0 +1,22 @@
+DECLARE
+    liczba NUMBER;
+    CURSOR c1 IS SELECT DISTINCT COUNT(*) vcount FROM egzaminy GROUP BY id_przedmiot ORDER BY 1 DESC;
+    CURSOR c2 IS SELECT nazwa_przedmiot, COUNT(*) FROM przedmioty p
+        INNER JOIN egzaminy e ON p.id_przedmiot = e.id_przedmiot
+        GROUP BY nazwa_przedmiot
+        HAVING COUNT(*) = liczba;
+BEGIN
+    OPEN c1;
+    IF c1%ISOPEN THEN
+        FETCH c1 INTO liczba;
+        WHILE c1%found LOOP
+            EXIT WHEN c1%rowcount > 3;
+            DBMS_OUTPUT.put_line(liczba);
+            FOR vc2 in C2 LOOP
+                DBMS_OUTPUT.put_line(vc2.nazwa_przedmiot);
+            END LOOP;
+            FETCH c1 INTO liczba;
+        END LOOP;
+    CLOSE c1;
+    END IF;
+END;

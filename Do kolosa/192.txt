@@ -1,0 +1,32 @@
+DECLARE
+    liczbaEgz NUMBER;
+    CURSOR c1 IS SELECT id_osrodek, nazwa_osrodek FROM Osrodki WHERE UPPER(nazwa_osrodek) = 'CKMP';
+    CURSOR c2(idOsrodka NUMBER) IS SELECT DISTINCT COUNT(id_egzamin) as liczba FROM egzaminy 
+        WHERE id_osrodek = idOsrodka
+        GROUP BY id_student
+        ORDER BY 1 DESC;
+    CURSOR c3(idOsrodka NUMBER, liczbaEgzaminow NUMBER) IS SELECT e.id_student, s.imie, s.nazwisko,
+        COUNT(e.id_egzamin) FROM Egzaminy e
+        INNER JOIN studenci s ON s.id_student = e.id_student
+        WHERE id_osrodek = idOsrodka 
+        GROUP BY e.id_student, s.imie, s.nazwisko
+        HAVING COUNT(e.id_egzamin) = liczbaEgzaminow;
+BEGIN  
+    FOR daneC1 in c1 LOOP
+        DBMS_OUTPUT.put_line(daneC1.id_osrodek || ' ' || daneC1.nazwa_osrodek);
+        OPEN c2(daneC1.id_osrodek);
+        IF C2%ISOPEN THEN
+        FETCH c2 into liczbaEgz;
+        WHILE C2%FOUND LOOP
+            EXIT WHEN C2%rowcount > 2;
+            FOR daneC3 in c3(daneC1.id_osrodek, liczbaEgz) LOOP
+                DBMS_OUTPUT.put_line(daneC1.id_osrodek || ' ' || daneC1.nazwa_osrodek || ' ' || liczbaEgz || ' ' || daneC3.id_student || ' ' || daneC3.imie || ' ' || daneC3.nazwisko);
+            END LOOP;
+            FETCH c2 INTO liczbaEgz;
+        END LOOP;
+        CLOSE c2;
+        END IF;
+    END LOOP;
+END;
+
+/

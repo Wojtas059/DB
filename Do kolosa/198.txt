@@ -1,0 +1,23 @@
+CREATE TABLE TLMOsrodki(
+    rok NUMBER,
+    miesiac NUMBER,
+    id_osrodek NUMBER,
+    nazwa_osrodek VARCHAR(40),
+    liczbaEgzaminow NUMBER
+)
+
+
+DECLARE
+    CURSOR c1 IS SELECT id_osrodek, nazwa_osrodek FROM osrodki;
+    CURSOR c2(idOsrodka NUMBER) IS SELECT EXTRACT(YEAR FROM data_egzamin) as rok, EXTRACT(MONTH FROM data_egzamin) as miesiac, 
+    COUNT(id_egzamin) as liczba FROM egzaminy 
+    WHERE id_osrodek = idOsrodka
+    GROUP BY EXTRACT(YEAR FROM data_egzamin), EXTRACT(MONTH FROM data_egzamin);
+BEGIN
+    FOR daneC1 in c1 LOOP
+        FOR daneC2 in c2(daneC1.id_osrodek) LOOP
+            INSERT INTO TLMOSrodki(rok, miesiac, id_osrodek, nazwa_osrodek, liczbaEgzaminow) 
+            VALUES(daneC2.rok, daneC2.miesiac, daneC1.id_osrodek, daneC1.nazwa_osrodek, daneC2.liczba);
+        END LOOP;
+    END LOOP;
+END;

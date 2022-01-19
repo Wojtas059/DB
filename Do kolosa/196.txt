@@ -1,0 +1,12 @@
+CREATE OR REPLACE TRIGGER PUNKTY_EGZAMINY BEFORE INSERT OR UPDATE ON Egzaminy FOR EACH ROW
+    BEGIN
+        IF INSERTING OR UPDATING THEN
+            IF :new.PUNKTY IS NULL THEN
+                IF :new.ZDAL = 'T' THEN
+                    :new.PUNKTY := ROUND(DBMS_RANDOM.VALUE(3, 5), 2);
+                ELSE
+                    :new.PUNKTY := ROUND(DBMS_RANDOM.VALUE(2, 2.99), 2);
+                END IF;
+            END IF;
+        END IF;
+    END;

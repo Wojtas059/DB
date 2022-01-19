@@ -1,0 +1,17 @@
+CREATE OR REPLACE TRIGGER egzamin_punkty
+BEFORE UPDATE of zdal ON egzaminy FOR EACH ROW
+DECLARE
+    FUNCTION CountPoints(zdal varchar2) return number is
+    vPoints NUMBER;
+    BEGIN
+        IF zdal = 'T' THEn
+            vPoints := ROUND(DBMS_RANDOM.value(3, 5), 2);
+        ELSE 
+            vPoints := ROUND(DBMS_RANDOM.value(2, 2.99), 2);
+        END IF;
+        RETURN vPoints;
+    END;
+BEGIN
+    :new.punkty := CountPoints(:new.zdal);
+    DBMS_OUTPUT.put_line('Nowe punkty: ' || :new.punkty);
+END;

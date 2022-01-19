@@ -1,0 +1,5 @@
+SELECT o.id_osrodek, o.nazwa_osrodek, COUNT(id_egzamin) FROM osrodki o
+INNER JOIN egzaminy e ON e.id_osrodek = o.id_osrodek
+GROUP BY o.id_osrodek, o.nazwa_osrodek
+HAVING COUNT(id_egzamin) = (SELECT MIN(COUNT(id_egzamin)) FROM egzaminy
+GROUP BY id_osrodek)

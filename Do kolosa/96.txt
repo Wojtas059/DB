@@ -1,0 +1,8 @@
+SELECT p.id_przedmiot, p.nazwa_przedmiot, COUNT(id_egzamin) FROM przedmioty p
+INNER JOIN egzaminy e ON p.id_przedmiot = e.id_przedmiot
+GROUP BY p.id_przedmiot, p.nazwa_przedmiot
+HAVING COUNT(e.id_egzamin) = (SELECT MAX(COUNT(id_egzamin)) FROM egzaminy
+GROUP BY id_przedmiot)
+
+
+

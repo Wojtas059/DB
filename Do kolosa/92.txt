@@ -1,0 +1,6 @@
+SELECT DISTINCT s.id_student, s.imie, s.nazwisko FROM STUDENCI s
+LEFT JOIN EGZAMINY e ON e.id_student = s.id_student
+WHERE s.ID_STUDENT NOT IN (SELECT DISTINCT id_student from EGZAMINY e2
+INNER JOIN Przedmioty p ON e2.id_przedmiot = p.id_przedmiot
+WHERE UPPER(p.nazwa_przedmiot) = 'BAZY DANYCH')
+ORDER BY s.id_student

@@ -1,0 +1,5 @@
+SELECT DISTINCT o.id_osrodek, o.nazwa_osrodek, o.miasto FROM osrodki o
+LEFT JOIN Egzaminy e ON e.id_osrodek = o.id_osrodek
+WHERE o.id_osrodek NOT IN (SELECT e2.id_osrodek FROM Egzaminy e2
+INNER JOIN Przedmioty p ON p.id_przedmiot = e2.id_przedmiot 
+WHERE UPPER(p.nazwa_przedmiot) = 'BAZY DANYCH');

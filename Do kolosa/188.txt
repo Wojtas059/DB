@@ -1,0 +1,9 @@
+DECLARE
+    CURSOR CEgz IS SELECT id_egzaminator, imie, nazwisko FROM Egzaminatorzy ORDER BY imie, nazwisko;
+    i NUMBER DEFAULT 0;
+BEGIN
+    FOR dane in CEgz LOOP
+        i := i + 1;
+        DBMS_OUTPUT.put_line(i || ' ' || dane.id_egzaminator || ' ' || dane.imie || ' ' || dane.nazwisko);
+    END LOOP;
+END;

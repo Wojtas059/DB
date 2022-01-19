@@ -1,0 +1,10 @@
+DECLARE
+    CURSOR COsrodki IS SELECT id_osrodek, nazwa_osrodek FROM osrodki;
+    CURSOR CEgzaminy(idOsrodka NUMBER) IS SELECT COUNT(*) as liczba FROM egzaminy WHERE id_osrodek = idOsrodka;
+BEGIN
+    FOR osrodek in COsrodki LOOP
+        FOR egzaminy IN CEgzaminy(osrodek.id_osrodek) LOOP
+            DBMS_OUTPUT.put_line(osrodek.id_osrodek || ' ' || osrodek.nazwa_osrodek || ' ' || egzaminy.liczba);
+        END LOOP;
+    END LOOP;
+END;

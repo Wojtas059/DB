@@ -1,0 +1,12 @@
+SELECT p.id_przedmiot, p.nazwa_przedmiot, egz.id_egzaminator, egz.imie, egz.nazwisko, o.id_osrodek, o.nazwa_osrodek, COUNT(e.id_egzamin) FROM egzaminy e
+INNER JOIN przedmioty p ON e.id_przedmiot = p.id_przedmiot
+INNER JOIN egzaminatorzy egz ON egz.id_egzaminator = e.id_egzaminator
+INNER JOIN osrodki o ON o.id_osrodek = e.id_osrodek
+WHERE UPPER(egz.nazwisko) = 'MURYJAS' AND UPPER(o.nazwa_osrodek) = 'CKMP'
+GROUP BY p.id_przedmiot, p.nazwa_przedmiot, egz.id_egzaminator, egz.imie, egz.nazwisko, o.id_osrodek, o.nazwa_osrodek
+HAVING COUNT(e.id_egzamin) = (
+SELECT MAX(COUNT(e2.id_egzamin)) FROM egzaminy e2
+WHERE e2.id_przedmiot = p.id_przedmiot AND e2.id_egzaminator = egz.id_egzaminator
+GROUP BY e2.id_osrodek)
+ORDER BY p.id_przedmiot, o.id_osrodek, egz.id_egzaminator
+

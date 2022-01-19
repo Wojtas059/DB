@@ -1,0 +1,10 @@
+SELECT o.id_osrodek, o.nazwa_osrodek FROM osrodki o
+WHERE NOT EXISTS (
+SELECT 1 FROM egzaminy e
+INNER JOIN osrodki o2 ON e.id_osrodek = o2.id_osrodek
+INNER JOIN studenci s ON s.id_student = e.id_student
+WHERE UPPER(s.nazwisko) = 'NOWAK' ANd
+o.id_osrodek = e.id_osrodek
+)
+
+

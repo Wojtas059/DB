@@ -1,0 +1,11 @@
+SELECT o.id_osrodek, o.nazwa_osrodek, s.id_student, s.imie, s.nazwisko, COUNT(e.id_egzamin) FROm egzaminy e
+INNER JOIN osrodki o ON e.id_osrodek = o.id_osrodek
+INNER JOIN studenci s ON s.id_student = e.id_student
+WHERE UPPER(s.nazwisko) = 'NOWAK' and e.zdal = 'T'
+GROUP BY o.id_osrodek, o.nazwa_osrodek, s.id_student, s.imie, s.nazwisko
+HAVING COUNT(e.id_egzamin) = (
+SELECT MIN(COUNT(e2.id_egzamin)) FROm egzaminy e2
+INNER JOIN studenci s2 ON s2.id_student = e2.id_student
+WHERE UPPER(s2.nazwisko) = 'NOWAK' and e2.zdal = 'T'
+GROUP BY e2.id_osrodek
+)

@@ -1,0 +1,13 @@
+DECLARE
+    PROCEDURE PMOsrodek(idOsrodka NUMBER, nazwaOsrodek VARCHAR2, miasto VARCHAR2) IS
+    vIdOsrodek NUMBER;
+    BEGIN 
+        SELECT id_osrodek INTO vIdOsrodek FROM osrodki WHERE id_osrodek = idOsrodka AND rownum = 1;
+        UPDATE Osrodki SET nazwa_osrodek = nazwaOsrodek, miasto = PMOsrodek.miasto WHERE id_osrodek = idOsrodka;
+    EXCEPTION 
+        WHEN NO_DATA_FOUND THEN
+        DBMS_OUTPUT.put_line('error');
+    END PMOsrodek;
+BEGIN
+    PMOsrodek(1, 'testowa2', '123456879');
+END;

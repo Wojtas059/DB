@@ -1,0 +1,16 @@
+DECLARE
+    wyjatek EXCEPTION;
+    CURSOR c1 IS SELECT egz.id_egzaminator, egz.imie, egz.nazwisko, data_egzamin, COUNT(id_egzamin) as liczba FROM egzaminy e
+    INNER JOIN egzaminatorzy egz ON egz.id_egzaminator = e.id_egzaminator
+    GROUP BY egz.id_egzaminator, egz.imie, egz.nazwisko, data_egzamin;
+BEGIN
+    FOR vC1 IN c1 LOOP
+        BEGIN 
+            IF vC1.liczba > 5 THEN RAISE wyjatek;
+            END IF;
+        EXCEPTION
+            WHEN wyjatek THEN
+                DBMS_OUTPUT.put_line(vC1.id_egzaminator || ' ' || vC1.imie || ' ' || vC1.nazwisko || ' ' || vC1.liczba);
+        END;
+    END LOOP;
+END;

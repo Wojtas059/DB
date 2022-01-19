@@ -1,0 +1,9 @@
+SELECT p.id_przedmiot, p.nazwa_przedmiot, s.id_student, s.imie, s.nazwisko, MIN(data_egzamin) FROM egzaminy e
+INNER JOIN przedmioty p ON p.id_przedmiot = e.id_przedmiot
+INNER JOIN studenci s ON s.id_student = e.id_student
+GROUP BY p.id_przedmiot, p.nazwa_przedmiot, s.id_student, s.imie, s.nazwisko
+HAVING MIN(data_egzamin) IN
+(
+SELECT MIN(data_egzamin) FROM egzaminy e2
+WHERE e2.id_przedmiot = p.id_przedmiot
+)

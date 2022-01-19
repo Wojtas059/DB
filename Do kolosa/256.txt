@@ -1,0 +1,15 @@
+declare 
+    procedure zad256 is
+    CURSOR c1 IS SELECT id_osrodek, nazwa_osrodek FROM osrodki;
+    bylEgzamin NUMBER;
+    begin
+        FOR vC1 IN c1 LOOP
+            SELECT COUNT(1) INTO bylEgzamin FROM egzaminy where id_osrodek = vC1.id_osrodek AND rownum = 1;
+            IF bylEgzamin = 1 THEN
+                DBMS_OUTPUT.put_line(vC1.id_osrodek || ' ' || vC1.nazwa_osrodek);
+            END IF;
+        END LOOP;
+    end;
+begin 
+    zad256;
+end;

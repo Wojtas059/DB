@@ -1,0 +1,13 @@
+DECLARE
+    CURSOR c1 IS SELECT id_przedmiot, nazwa_przedmiot FROM przedmioty;
+    CURSOR c2(idPrzedmiot NUMBER) IS SELECT e.id_student, s.imie, s.nazwisko, COUNT(id_egzamin) as liczba FROM egzaminy e
+        INNER JOIN studenci s ON s.id_student = e.id_student
+        WHERE id_przedmiot = idPrzedmiot
+        GROUP BY e.id_student, s.imie, s.nazwisko;
+BEGIN
+    FOR daneC1 in c1 LOOP
+        FOR daneC2 in c2(daneC1.id_przedmiot) LOOP
+            DBMS_OUTPUT.put_line(daneC2.id_student || ' ' || daneC2.imie || ' ' || daneC2.nazwisko || ' ' || daneC2.liczba || ' ' || daneC1.id_przedmiot || ' ' || daneC1.nazwa_przedmiot);
+        END LOOP;
+    END LOOP;
+END;

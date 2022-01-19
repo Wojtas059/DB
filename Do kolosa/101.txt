@@ -1,0 +1,8 @@
+SELECT o.id_osrodek, o.nazwa_osrodek FROM osrodki o
+LEFT JOIN egzaminy e ON e.id_osrodek = o.id_osrodek
+where NOT EXISTS
+(
+SELECT 1 FROM Egzaminy e2
+INNER JOIN egzaminatorzy egz ON egz.id_egzaminator = e2.id_egzamin
+WHERE UPPER(egz.nazwisko) = 'MURYJAS' 
+)

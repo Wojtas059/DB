@@ -1,0 +1,21 @@
+DECLARE
+    data DATE;
+    CURSOR c1 IS SELECT DISTINCT data_egzamin FROM Egzaminy ORDER BY 1 DESC;
+    CURSOR c2 IS SELECT e.id_student, s.imie, s.nazwisko, data_egzamin FROM Egzaminy e
+    INNER JOIN studenci s ON s.id_student = e.id_student
+    WHERE data_egzamin = data;
+BEGIN 
+    OPEN c1;
+    IF c1%ISOPEN THEN
+        FETCH c1 INTO data;
+        WHILE c1%FOUND LOOP
+            EXIT WHEN c1%rowcount > 3;
+            DBMS_OUTPUT.put_line(data);
+            FOR dane in c2 LOOP
+                DBMS_OUTPUT.put_line(dane.id_student || ' ' || dane.imie || ' ' || dane.nazwisko); 
+            END LOOP;
+            FETCH c1 into data;
+        END LOOP;
+    CLOSE c1;
+    END IF;
+END;

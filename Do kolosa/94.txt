@@ -1,0 +1,23 @@
+SELECT s.id_student FROM egzaminy e
+INNER JOIN przedmioty p On p.id_przedmiot = e.id_przedmiot
+INNER JOIN studenci s On s.id_student = e.id_student
+WHERE UPPER(p.nazwa_przedmiot) = 'BAZY DANYCH' AND e.id_osrodek IN (SELECT id_osrodek FROM osrodki WHERE UPPER(nazwa_osrodek) = 'LBS' OR UPPER(nazwa_osrodek) = 'CKMP')
+GROUP BY s.id_student
+HAVING COUNT(DISTINCT e.id_osrodek) = 4
+ORDER BY s.id_student
+
+
+
+select s.id_student, s.nazwisko, s.imie from studenci s 
+where s.id_student in (select e.id_student from
+egzaminy e inner join przedmioty p on e.id_przedmiot = p.id_przedmiot
+inner join osrodki o on o.id_osrodek = e.id_osrodek
+where o.nazwa_osrodek = 'CKMP' and p.nazwa_przedmiot ='Bazy danych'
+)
+intersect
+select s.id_student, s.nazwisko, s.imie from studenci s 
+where s.id_student in (select e.id_student from
+egzaminy e inner join przedmioty p on e.id_przedmiot = p.id_przedmiot
+inner join osrodki o on o.id_osrodek = e.id_osrodek
+where o.nazwa_osrodek = 'LBS' and p.nazwa_przedmiot ='Bazy danych'
+)

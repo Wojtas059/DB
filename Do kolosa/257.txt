@@ -1,0 +1,29 @@
+DECLARE 
+    CURSOR c1 IS SELECT id_student FROM studenci;
+    vExams NUMBER;
+    vPoints NUMBER;
+    FUNCTION CountExams(idStudenta NUMBER) RETURN NUMBER IS
+        totalExams NUMBER;
+    BEGIN
+        SELECT COUNT(*) INTO totalExams FROm egzaminy where id_student = idStudenta;
+        RETURN totalExams;
+    END CountExams;
+    
+    FUNCTION CountPoints(idStudenta NUMBER) RETURN NUMBER IS
+        totalPoints NUMBER;
+    BEGIN
+        SELECT SUM(punkty) INTO totalPoints from egzaminy where id_student = idStudenta;
+        RETURN totalPoints;
+    END CountPoints;
+BEGIN
+    FOR vC1 in c1 LOOP
+        vExams := CountExams(vC1.id_student);
+        
+        if vExams = 0 THEN
+            DBMS_OUTPUT.put_line('Student o id: ' || vC1.id_student || ' nie zdawał żadnego egzaminu');
+        ELSE
+            vPoints := CountPoints(vC1.id_student);
+            DBMS_OUTPUT.put_line('Student id: ' || vC1.id_student || ' Liczba punktów: ' || vPoints);
+        END IF;
+    END LOOP;
+END;

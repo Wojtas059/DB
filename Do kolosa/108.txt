@@ -1,0 +1,14 @@
+SELECT s.id_student, s.imie, s.nazwisko, o.id_osrodek, o.nazwa_osrodek, MIN(e.data_egzamin),  MAX(e.data_egzamin) FROM egzaminy e
+INNER JOIN studenci s ON s.id_student = e.id_student
+INNER JOIN osrodki o ON o.id_osrodek = e.id_osrodek
+GROUP BY s.id_student, s.imie, s.nazwisko, o.id_osrodek, o.nazwa_osrodek
+HAVING MAX(e.data_egzamin) = (
+SELECT MAX(e2.data_egzamin) FROM egzaminy e2
+WHERE e2.id_osrodek = o.id_osrodek
+GROUP BY e2.id_osrodek) OR
+MIN(e.data_egzamin) = (
+SELECT MIN(e2.data_egzamin) FROM egzaminy e2
+WHERE e2.id_osrodek = o.id_osrodek
+GROUP BY e2.id_osrodek
+)
+ORDER BY o.id_osrodek

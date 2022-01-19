@@ -1,0 +1,18 @@
+DECLARE
+    CURSOR c1 IS SELECT p.id_przedmiot, p.nazwa_przedmiot, COUNT(id_egzamin) as liczba FROM przedmioty p
+    LEFT JOIN Egzaminy e ON e.id_przedmiot = p.id_przedmiot
+    GROUP BY p.id_przedmiot, p.nazwa_przedmiot;
+BEGIN
+    FOR vC1 in c1 LOOP
+        BEGIN
+            IF vC1.liczba = 0 THEN RAISE NO_DATA_FOUND;
+            ELSE
+                DBMS_OUTPUT.put_line(vC1.nazwa_przedmiot || ' ' || vC1.liczba);
+            END IF;
+        EXCEPTION
+            WHEN NO_DATA_FOUND THEN
+                DBMS_OUTPUT.put_line('Z przedmiotu o nazwie: ' || vC1.nazwa_przedmiot || ' nie przeprowadzono egzaminu');
+        END;
+    END LOOP;
+END;
+

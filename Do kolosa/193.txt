@@ -1,0 +1,6 @@
+BEGIN
+INSERT INTO Przedmioty(id_przedmiot, nazwa_przedmiot) VALUES (10, 'Hurtownie danych');
+EXCEPTION
+    WHEN DUP_VAL_ON_INDEX THEN
+       DBMS_OUTPUT.put_line('Podany przedmiot już istnieje');
+END;

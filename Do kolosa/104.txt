@@ -1,0 +1,8 @@
+SELECT s.id_student, s.imie, s.nazwisko, egz.id_egzaminator, e.data_egzamin FROM egzaminy e
+INNER JOIN egzaminatorzy egz ON egz.id_egzaminator = e.id_egzaminator
+INNER JOIN studenci s ON s.id_student = e.id_student
+WHERE e.data_egzamin = (
+SELECT MIN(data_egzamin) FROM egzaminy e2
+INNER JOIN egzaminatorzy egz2 ON egz2.id_egzaminator = e2.id_egzaminator
+WHERE UPPER(egz.nazwisko) = 'MURYJAS' AND egz2.id_egzaminator = egz.id_egzaminator
+)

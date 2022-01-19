@@ -1,0 +1,10 @@
+SELECT p.id_przedmiot, p.nazwa_przedmiot, o.id_osrodek, COUNT(e.id_egzamin) FROM egzaminy e
+INNER JOIn przedmioty p ON p.id_przedmiot = e.id_przedmiot
+INNER JOIN osrodki o ON o.id_osrodek = e.id_osrodek
+GROUP BY p.id_przedmiot, p.nazwa_przedmiot, o.id_osrodek
+HAVING COUNT(e.id_egzamin) = (
+SELECT MAX(COUNT(e2.id_przedmiot)) FROM egzaminy e2
+INNER JOIN osrodki o2 On o2.id_osrodek = e2.id_osrodek
+WHERE UPPER(o2.nazwa_osrodek) = 'CKMP' AND e2.id_osrodek = o.id_osrodek
+GROUP BY e2.id_przedmiot
+)

@@ -1,0 +1,6 @@
+SELECT o.id_osrodek, o.nazwa_osrodek, egz.id_egzaminator, egz.imie, egz.nazwisko, COUNT(DISTINCT e.id_student) FROM egzaminy e
+INNER JOIN osrodki o ON o.id_osrodek = e.id_osrodek
+INNER JOIN egzaminatorzy egz ON egz.id_egzaminator = e.id_egzaminator
+WHERE UPPER(egz.nazwisko) = 'MURYJAS'
+GROUP BY o.id_osrodek, o.nazwa_osrodek, egz.id_egzaminator, egz.imie, egz.nazwisko
+HAVING COUNT(DISTINCT e.id_student) > 2

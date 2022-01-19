@@ -1,0 +1,6 @@
+SELECT eg.id_egzaminator, eg.imie, eg.nazwisko, COUNT(DISTINCT e.id_student) as "Liczba egzaminowanych osob" FROM egzaminy e
+INNER JOIN egzaminatorzy eg ON eg.id_egzaminator = e.id_egzaminator
+GROUP BY  eg.id_egzaminator, eg.imie, eg.nazwisko
+HAVING COUNT(distinct e.id_student) = 
+(SELECT MAX(COUNT(distinct e2.id_student)) FROM egzaminy e2
+GROUP BY e2.id_egzaminator)

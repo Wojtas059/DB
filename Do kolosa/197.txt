@@ -1,0 +1,9 @@
+CREATE TABLE TLOEgzaminy (
+liczbaEgzaminow NUMBER,
+id_osrodek NUMBER
+)
+
+CREATE OR REPLACE Trigger osrodki_liczba_egzaminow BEFORE INSERT ON Egzaminy FOR EACH ROW
+BEGIN
+    UPDATE TLOEgzaminy SET liczbaEgzaminow = liczbaEgzaminow + 1 WHERE id_osrodek = new.id_osrodek;
+END;

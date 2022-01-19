@@ -1,0 +1,15 @@
+SELECT egz.id_egzaminator, egz.imie, egz.nazwisko, o.id_osrodek, o.nazwa_osrodek, MIN(data_egzamin) as pierwszy, MAX(data_egzamin) as ostatni FROM egzaminy e
+INNER JOIN egzaminatorzy egz ON egz.id_egzaminator = e.id_egzaminator
+INNER JOIN osrodki o ON o.id_osrodek = e.id_osrodek
+GROUP BY egz.id_egzaminator, egz.imie, egz.nazwisko, o.id_osrodek, o.nazwa_osrodek
+HAVING MIN(data_egzamin) = (
+    SELECT MIN(data_egzamin) FROM egzaminy e2
+    WHERE e2.zdal = 'T' AND e2.id_egzaminator = egz.id_egzaminator
+    GROUP BY e2.id_egzaminator
+) OR
+MAX(data_egzamin) = (
+    SELECT MAX(data_egzamin) FROM egzaminy e2
+    WHERE e2.zdal = 'T' AND e2.id_egzaminator = egz.id_egzaminator
+    GROUP BY e2.id_egzaminator
+)
+ORDER BY o.id_osrodek
